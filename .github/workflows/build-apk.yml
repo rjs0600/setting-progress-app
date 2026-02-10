@@ -1,0 +1,40 @@
+name: Build Android APK (Debug)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Create Flutter skeleton (if needed)
+        run: |
+          if [ ! -f "pubspec.yaml" ]; then
+            echo "pubspec.yaml not found"; exit 1;
+          fi
+          flutter create --platforms=android --org com.example.settingprogressapp .
+
+      - name: Use our app entry
+        run: |
+          cp -f lib/app_main.dart lib/main.dart
+
+      - name: Pub get
+        run: flutter pub get
+
+      - name: Build debug APK
+        run: flutter build apk --debug
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: setting-progress-debug-apk
+          path: build/app/outputs/flutter-apk/app-debug.apk
