@@ -1,31 +1,34 @@
-name: Build Windows EXE
+name: Windows 실행 파일 빌드
 
 on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build-windows:
     runs-on: windows-latest
 
     steps:
-      - name: Checkout repository
+      - name: 저장소 코드 가져오기
         uses: actions/checkout@v4
 
-      - name: Set up Flutter
+      - name: Flutter 설치
         uses: subosito/flutter-action@v2
         with:
-          channel: stable
+          flutter-version: 'stable'
 
-      - name: Enable Windows build
+      - name: Flutter 환경 확인
+        run: flutter doctor
+
+      - name: Windows 빌드 활성화
         run: flutter config --enable-windows-desktop
 
-      - name: Get dependencies
+      - name: 의존성 설치
         run: flutter pub get
 
-      - name: Build Windows EXE
-        run: flutter build windows
+      - name: Windows 실행 파일 빌드
+        run: flutter build windows --release
 
-      - name: Upload EXE artifact
+      - name: 빌드 결과 업로드
         uses: actions/upload-artifact@v4
         with:
           name: windows-exe
