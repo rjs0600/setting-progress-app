@@ -11,11 +11,12 @@ jobs:
       - name: 저장소 코드 가져오기
         uses: actions/checkout@v4
 
-      - name: Flutter 설치
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: 'stable'
-          channel: 'stable'
+     - 이름: Flutter 설치
+  사용: subosito/flutter-action@v2
+  ~와 함께:
+    플러터 버전: '안정적인'
+    채널: '안정적인'
+
 
       - name: Flutter 환경 확인
         run: flutter doctor
